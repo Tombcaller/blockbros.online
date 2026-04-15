@@ -114,8 +114,8 @@ li {
 #responseBox {
     margin-top: 15px;
     padding: 12px;
-    background: #5e9225;   /* dark box */
-    color: #ffffff;        /* readable text */
+    background: #5e9225;
+    color: #ffffff;
     border: 1px solid #444;
     min-height: 40px;
 }
