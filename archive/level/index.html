@@ -1,0 +1,84 @@
+<html>
+    <head>
+    <title>Archive Level</title>
+    <meta name="viewport" content="width=device-width; initial-scale = 1.0; maximum-scale=1.0; user-scalable=no" />
+    <meta name="viewport" content="width=device-width" />
+     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
+
+    <link rel="stylesheet" href="/styles/blockbros.css" type="text/css" media="all" />
+
+    <link rel="shortcut icon" href="/favicon.ico" />
+
+</head>
+<body>
+    <div id="main">
+        <h1 id="title"><img src="/images/logo.png" id="logo" alt="Block Bros"/></h1>
+
+        <center>
+        <div id="archive_level_container">
+            <b><h1>Archive Level</h1></b>
+
+        <input
+            type="number"
+            id="levelInput"
+            placeholder="Enter level ID"
+            style="width: 250px; font-size: 20px; padding: 4px;"
+        >
+
+        <button onclick="sendLevel()"
+        style="width: 250px; font-size: 20px; padding: 4px;"
+        >Send Archive Request
+        </button>
+
+        <div id="responseBox">Archive a level!</div>
+
+        </div>
+        </center>
+
+      <script>
+        async function sendLevel() {
+            const level = document.getElementById("levelInput").value;
+
+            // Msg for blank input //
+            if (level === "") {
+                document.getElementById("responseLabel").innerText = "Please enter a level ID!";
+                return;
+            }
+
+            // Change for debug!!!!!!!!!! //
+            const url = `http://192.168.1.136:8109/archive/level/${level}`;
+
+            try {
+                const response = await fetch(url, {
+                    method: "GET"
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Error! status: ${response.status}`);
+                }
+                
+                // Grabbing json from response //
+                const data = await response.json();
+
+                // Spitting out a custom message based on response //
+                if (data.success && data.new) {
+                    document.getElementById("responseBox").innerText = "Archive Sucessfull!\nFirst time archive!\nID:" + (level);
+                } else if (data.success) {
+                    document.getElementById("responseBox").innerText = "Archive Sucessfull!\nID:" + (level);
+                } else {
+                    document.getElementById("responseBox").innerText = "Failed to archive level.\nID:" + (level);
+                }
+
+
+            } 
+            // Displaying caught errors in response box //
+            catch (err) {
+                console.error(err);
+                document.getElementById("responseBox").innerText = "EPIC FAIL.\n" + err.message;
+            }
+        }
+        </script>
+
+    </div>
+</body>
+</html>
